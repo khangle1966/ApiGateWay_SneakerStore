@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shipping
+  namespace: sneakershop
+  labels:
+    k8s-app: shipping
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: shipping
+  template:
+    metadata:
+      name: shipping
+      labels:
+        k8s-app: shipping
+    spec:
+      containers:
+        - name: shipping
+          image: quangghuyyyyy/shippingservice:latest
+          ports:
+            - containerPort: 5005
+          securityContext:
+            privileged: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: shippingservice-service
+  namespace: sneakershop
+spec:
+  selector:
+    app: shipping
+  ports:
+    - protocol: TCP
+      port: 5005
+      targetPort: 5005
+  type: ClusterIP

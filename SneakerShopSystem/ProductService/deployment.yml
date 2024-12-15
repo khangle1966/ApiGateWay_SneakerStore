@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product
+  namespace: sneakershop
+  labels:
+    k8s-app: product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: product
+  template:
+    metadata:
+      name: product
+      labels:
+        k8s-app: product
+    spec:
+      containers:
+        - name: product
+          image: quangghuyyyyy/productservice:latest
+          ports:
+            - containerPort: 5004
+          securityContext:
+            privileged: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: productservice-service
+  namespace: sneakershop
+spec:
+  selector:
+    app: product
+  ports:
+    - protocol: TCP
+      port: 5004
+      targetPort: 5004
+  type: ClusterIP

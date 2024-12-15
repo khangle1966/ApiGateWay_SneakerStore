@@ -1,0 +1,36 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+  namespace: sneakershop
+  labels:
+    app: gateway
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+        - name: gateway
+          image: quangghuyyyyy/gateway:latest # Docker image của Gateway
+          ports:
+            - containerPort: 80  # Cổng của dịch vụ Gateway
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: sneakershop
+spec:
+  selector:
+    app: gateway
+  ports:
+    - protocol: TCP
+      port: 80        # Cổng mà Service sẽ lắng nghe
+      targetPort: 80   # Cổng trong container
+  type: NodePort       # Chế độ NodePort để có thể truy cập ngoài cluster

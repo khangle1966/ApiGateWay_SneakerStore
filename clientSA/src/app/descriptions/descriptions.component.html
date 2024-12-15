@@ -1,0 +1,44 @@
+<app-header></app-header>
+
+
+<div class="product">
+  <h1>Giỏ hàng</h1>
+  <div class="border_product-item">
+    <div class="border_left">
+      <div class="top">
+        <div class="titlesp">Sản phẩm</div>
+        <div class="titlesl">Số lượng</div>
+        <div class="titlegia">Giá</div>
+      </div>
+      <div class="left" *ngFor="let product of clothList$ | async">
+        <div class="imageproduct">
+          <img src="{{ product.imgUrl }}" />
+        </div>
+        <div class="name">
+          <p>{{ product.name }}</p>
+        </div>
+        <div class="stock">
+          <button (click)="removeFormStock(product)">-</button>
+          <p>{{ product.stock }}</p>
+
+          <button (click)="addToStock(product)">+</button>
+
+          <button (click)="removeFormCart(product)">xóa</button>
+        </div>
+        <div class="price">
+          <p>{{ product.price }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="top">
+        <div class="title">Tổng tiền</div>
+        <div class="total">{{ total$ | async }}</div>
+      </div>
+      <div class="bottom">
+        <button class="sold" >Thanh toán</button>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

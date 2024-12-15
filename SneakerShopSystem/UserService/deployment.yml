@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user
+  namespace: sneakershop
+  labels:
+    k8s-app: user
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: user
+  template:
+    metadata:
+      name: user
+      labels:
+        k8s-app: user
+    spec:
+      containers:
+        - name: user
+          image: quangghuyyyyy/userservice:latest
+          ports:
+            - containerPort: 5007
+          securityContext:
+            privileged: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: userservice-service
+  namespace: sneakershop
+spec:
+  selector:
+    app: user
+  ports:
+    - protocol: TCP
+      port: 5007
+      targetPort: 5007
+  type: ClusterIP

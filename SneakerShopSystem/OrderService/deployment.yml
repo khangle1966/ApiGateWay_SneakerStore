@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: order
+  namespace: sneakershop
+  labels:
+    k8s-app: order
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: order
+  template:
+    metadata:
+      name: order
+      labels:
+        k8s-app: order
+    spec:
+      containers:
+        - name: order
+          image: quangghuyyyyy/orderservice:latest
+          ports:
+            - containerPort: 5003
+          securityContext:
+            privileged: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orderservice-service
+  namespace: sneakershop
+spec:
+  selector:
+    app: order
+  ports:
+    - protocol: TCP
+      port: 5003
+      targetPort: 5003
+  type: ClusterIP

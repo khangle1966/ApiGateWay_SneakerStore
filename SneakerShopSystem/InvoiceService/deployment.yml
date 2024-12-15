@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: invoice
+  namespace: sneakershop
+  labels:
+    k8s-app: invoice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: invoice
+  template:
+    metadata:
+      name: invoice
+      labels:
+        k8s-app: invoice
+    spec:
+      containers:
+        - name: invoice
+          image: quangghuyyyyy/invoiceservice:latest
+          ports:
+            - containerPort: 5002
+          securityContext:
+            privileged: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: invoice-service
+  namespace: sneakershop
+spec:
+  selector:
+    app: invoice
+  ports:
+    - protocol: TCP
+      port: 5002
+      targetPort: 5002
+  type: ClusterIP

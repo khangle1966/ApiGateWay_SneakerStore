@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stock
+  namespace: sneakershop
+  labels:
+    k8s-app: stock
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: stock
+  template:
+    metadata:
+      name: stock
+      labels:
+        k8s-app: stock
+    spec:
+      containers:
+        - name: stock
+          image: quangghuyyyyy/stockservice:latest
+          ports:
+            - containerPort: 5006
+          securityContext:
+            privileged: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stockservice-service
+  namespace: sneakershop
+spec:
+  selector:
+    app: stock
+  ports:
+    - protocol: TCP
+      port: 5006
+      targetPort: 5006 
+  type: ClusterIP 

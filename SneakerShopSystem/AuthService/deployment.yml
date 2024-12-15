@@ -1,0 +1,40 @@
+﻿apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  namespace: sneakershop
+  labels:
+    k8s-app: auth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: auth
+  template:
+    metadata:
+      name: auth
+      labels:
+        k8s-app: auth
+    spec:
+      containers:
+        - name: auth
+          image: quangghuyyyyy/authservice:latest
+          ports:
+            - containerPort: 5001  # Cổng container đang lắng nghe, bạn có thể chỉnh lại nếu cần
+          securityContext:
+            privileged: false
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authservice-service  # Tên service sẽ là 'authservice-service'
+  namespace: sneakershop
+spec:
+  selector:
+    app: auth
+  ports:
+    - protocol: TCP
+      port: 5001           # Cổng của service sẽ lắng nghe từ bên ngoài (hoặc từ các pod khác)
+      targetPort: 5001     # Cổng này sẽ chuyển tiếp tới container port
+  type: ClusterIP  # Sử dụng ClusterIP cho internal communication giữa các pod trong Kubernetes

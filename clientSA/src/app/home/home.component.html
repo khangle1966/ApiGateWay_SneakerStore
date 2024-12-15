@@ -1,0 +1,41 @@
+<app-header></app-header>
+
+<div id="collection">
+  <h1>COLLAB'S</h1>
+  <mat-icon>update</mat-icon>
+</div>
+<div class="custom">
+  <div class="customleft">
+    <h2>Lọc giá</h2>
+    <h2>Loại</h2>
+    <h2>Kích thước</h2>
+    <h2>Màu sắc</h2>
+  </div>
+  <div class="customright">
+    <mat-form-field appearance="fill">
+      <mat-label>Thứ tự</mat-label>
+      <mat-select>
+        <mat-option value="Mới nhất">Mới nhất</mat-option>
+        <mat-option value="Giá tăng dần">Giá tăng dần</mat-option>
+        <mat-option value="Giá giảm dần">Giá giảm dần</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+</div>
+<div class="product">
+  <div class="row1">
+    <div class="product-item" *ngFor="let car of productslist$ |async">
+      <div class="imageproduct" (click)="openDialog(car)">
+        <img [src]="car.imgUrl" alt="{{ car.imgUrl }}" />
+      </div>
+      <div class="name" (mouseleave)="closeDialog()">
+        <p style="font-size: 24px;">{{ car.name }}</p>
+      </div>
+      <div class="price">
+        <p>{{ car.price | currency: 'VND':'symbol':'1.0-0' }}₫</p>
+      </div>
+      <button class="submit" (click)="addToCart(car)">thêm vào giỏ</button>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>
